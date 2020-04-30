@@ -11,7 +11,6 @@
 #using the head command just filter first ten positions
 #therefore nearest ten posts are reported
 sudo touch /home/ChiefCommander/nearest10
-declare -r PI=3.14
 lng1=77.1025;
 lat1=28.7041;
 for i in {1..50..1}
@@ -32,6 +31,9 @@ do
  distance=$(echo "$sinlat1 * $sinlat2 + $coslat1 * $coslat2 * $costeta"|bc -l)
  distance=$(echo "$distance * 60"|bc -l)
  distance=$(echo "$distance * 1852"|bc -l)
- sudo echo "Army$i   $distance"|column -t|cat >> /home/ChiefCommander/nearest10
+ if [ -z "$distance" ]
+ 	then echo "Failed"
+ 	else echo "Army$i   $distance"|column -t|cat >> /home/ChiefCommander/nearest10
+ fi
 done
-sort -k2 -n /home/ChiefCommander/nearest10|head
+sort -k2 /home/ChiexfCommander/nearest10|head|awk '{print $1}'|cat > /home/ChiexfCommander/nearest10
