@@ -36,4 +36,4 @@ do
  	else echo "Army$i   $distance"|column -t|cat >> /home/ChiefCommander/nearest10
  fi
 done
-sort -k2 /home/ChiexfCommander/nearest10|tail|awk '{print $1}'|cat > /home/ChiexfCommander/nearest10
+sort -k2 /home/ChiexfCommander/nearest10|tail|awk '{print $1}'|cat > /home/ChiefCommander/nearest10
