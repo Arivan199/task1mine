@@ -20,18 +20,18 @@ do
  a=$(grep -w $d /home/ArmyGeneral/Attendance_record.txt|grep -w Army$i |awk '{print $2;}')
  lng2=$(curl https://inductions.delta.nitt.edu/sysad-task1-position.log|grep -w $d|grep -w $a|awk '{print $4;}'|sed 's/E°//');
  lat2=$(curl https://inductions.delta.nitt.edu/sysad-task1-position.log|grep -w $d|grep -w $a|awk '{print $3;}'|sed 's/N°//');
- teta=$(echo "$lng1 - $lng2"|bc)
- dtrlat1=$(echo "$lat1 * PI / 180|bc -l")
- dtrlat2=$(echo "$lat2 * PI / 180|bc -l")
- dtrteta=$(echo "$teta * PI / 180|bc -l")
+ teta=$(echo "$lng1 - $lng2"|bc -l)
+ dtrlat1=$(echo "$lat1 * 3.14 / 180"|bc -l)
+ dtrlat2=$(echo "$lat2 * 3.14 / 180"|bc -l)
+ dtrteta=$(echo "$teta * 3.14 / 180"|bc -l)
  sinlat1=$(bc -l <<< "s($dtrlat1)")
  sinlat2=$(bc -l <<< "s($dtrlat2)")
  coslat1=$(bc -l <<< "c($dtrlat1)")
- coslat2=$(bc -l <<< "s($dtrlat2)")
- costeta=$(bc -l <<< "s($dtrteta)")
- distance=$(echo "$sinlat1 * $sinlat2 + $coslat1 * $coslat2 * $costeta|bc -l")
- distance=$(echo "$distance * 60|bc -l")
- distance=$(echo "$distance * 1852|bc -l")
- echo "Army$i   $distance"|column -t|cat >> /home/ChiefCommander/nearest10
+ coslat2=$(bc -l <<< "c($dtrlat2)")
+ costeta=$(bc -l <<< "c($dtrteta)")
+ distance=$(echo "$sinlat1 * $sinlat2 + $coslat1 * $coslat2 * $costeta"|bc -l)
+ distance=$(echo "$distance * 60"|bc -l)
+ distance=$(echo "$distance * 1852"|bc -l)
+ sudo echo "Army$i   $distance"|column -t|cat >> /home/ChiefCommander/nearest10
 done
 sort -k2 -n /home/ChiefCommander/nearest10|head
